@@ -64,10 +64,10 @@ extends:
       - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
         - template: /eng/common/templates-official/job/onelocbuild.yml@self
           parameters:
-        LclSource: lclFilesfromPackage
-        LclPackageId: 'LCL-JUNO-PROD-MSBUILD'
-        MirrorRepo: 'msbuild'
-        MirrorBranch: 'main' # should match condition above
+            LclSource: lclFilesfromPackage
+            LclPackageId: 'LCL-JUNO-PROD-MSBUILD'
+            MirrorRepo: 'msbuild'
+            MirrorBranch: 'main' # should match condition above
 
       - job: Windows_NT
         pool:
