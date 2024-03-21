@@ -71,7 +71,7 @@ extends:
 
       - job: Windows_NT
         pool:
-          name: VSEngSS-MicroBuild2019-1ES
+          name: VSEngSS-MicroBuild2022-1ES
           demands:
           - agent.os -equals Windows_NT
 
