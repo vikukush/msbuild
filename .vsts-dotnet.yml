@@ -159,7 +159,7 @@ extends:
 
         # Build VS bootstrapper
         # Generates $(Build.StagingDirectory)\MicroBuild\Output\BootstrapperInfo.json
-        - task: MicroBuildBuildVSBootstrapper@3
+        - task: MicroBuildBuildVSBootstrapper@2
           inputs:
             vsMajorVersion: $(VisualStudio.MajorVersion)
             channelName: $(VisualStudio.ChannelName)
