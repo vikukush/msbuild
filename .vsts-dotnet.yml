@@ -162,15 +162,15 @@ extends:
 
         # Build VS bootstrapper
         # Generates $(Build.StagingDirectory)\MicroBuild\Output\BootstrapperInfo.json
-        - task: MicroBuildBuildVSBootstrapper@3
-          inputs:
-            vsMajorVersion: $(VisualStudio.MajorVersion)
-            channelName: $(VisualStudio.ChannelName)
-            manifests: $(VisualStudio.SetupManifestList)
-            outputFolder: '$(Build.SourcesDirectory)\artifacts\VSSetup\$(BuildConfiguration)\Insertion'
-            bootstrapperCoreVersion:
-          displayName: 'OptProf - Build VS bootstrapper'
-          condition: succeeded()
+        # - task: MicroBuildBuildVSBootstrapper@3
+        #   inputs:
+        #     vsMajorVersion: $(VisualStudio.MajorVersion)
+        #     channelName: $(VisualStudio.ChannelName)
+        #     manifests: $(VisualStudio.SetupManifestList)
+        #     outputFolder: '$(Build.SourcesDirectory)\artifacts\VSSetup\$(BuildConfiguration)\Insertion'
+        #     bootstrapperCoreVersion:
+        #   displayName: 'OptProf - Build VS bootstrapper'
+        #   condition: succeeded()
 
         # Publish run settings
         # - task: PowerShell@2
