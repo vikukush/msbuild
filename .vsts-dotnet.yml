@@ -18,6 +18,7 @@ parameters:
   default: 'default'
 
 variables:
+  - template: /eng/common/templates-official/variables/pool-providers.yml@self
   # if OptProfDrop is not set, string '$(OptProfDrop)' will be passed to the build script.
   - name: OptProfDrop
     value: ''
@@ -312,8 +313,8 @@ extends:
             - Windows_NT
             - Source_Build_Managed
           pool:
-            name: netcore1espool-internal
-            image: 1es-windows-2022-pt
+            name: $(DncEngInternalBuildPool)
+            image: $(WindowsImage)
             os: windows
 
     - template: eng\common\templates-official\post-build\post-build.yml@self
