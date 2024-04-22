@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using System;
@@ -224,11 +224,8 @@ namespace Microsoft.Build.Tasks.Deployment.ManifestUtilities
         private static Manifest Deserialize(Stream s)
         {
             s.Position = 0;
-#pragma warning disable CA2000 // Dispose objects before losing scope is suppressed because the stream is needed in caller
-            var r = new XmlTextReader(s) { DtdProcessing = DtdProcessing.Ignore };
-#pragma warning restore CA2000 // Dispose objects before losing scope
-           
-
+            var settings = new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore, CloseInput = false };
+            using XmlReader r = XmlReader.Create(s, settings);
             do
             {
                 r.Read();
