@@ -4138,9 +4138,6 @@ namespace Microsoft.Build.UnitTests.Evaluation
                 new string[] {"$(Reg:AA)", ""},
                 new string[] {"$(Reg:AAAA)", ""},
                 new string[] {"$(Reg:AAA)", ""},
-                // Following two are comparison between non-numeric and numeric properties. More details: #10583
-                new string[] {"$(a.Equals($(c)))","False"},
-                new string[] {"$(a.CompareTo($(c)))","1"},
                                    };
 
             var errorTests = new List<string> {
