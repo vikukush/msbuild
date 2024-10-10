@@ -141,7 +141,6 @@ namespace Microsoft.Build.Construction
             XmlElementWithLocation newElement = XmlUtilities.RenameXmlElement(XmlElement, newName, XmlElement.NamespaceURI);
 
             ReplaceElement(newElement);
-            Parent.UpdateElementName(this, oldName);
         }
 
         internal static void ValidateValidMetadataAsAttributeName(string name, string parentName, IElementLocation parentLocation)
