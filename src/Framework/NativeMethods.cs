@@ -1546,7 +1546,6 @@ internal static class NativeMethods
     /// <returns>True only if the contents of <paramref name="s"/> and the first <paramref name="len"/> characters in <paramref name="buffer"/> are identical.</returns>
     private static unsafe bool AreStringsEqual(char* buffer, int len, string s)
     {
-#if CLR2COMPATIBILITY
         if (len != s.Length)
         {
             return false;
@@ -1561,9 +1560,6 @@ internal static class NativeMethods
         }
 
         return true;
-#else
-        return MemoryExtensions.SequenceEqual(new ReadOnlySpan<char>(buffer, len), s.AsSpan());
-#endif
     }
 
     internal static void VerifyThrowWin32Result(int result)
