@@ -72,12 +72,8 @@ namespace Microsoft.Build.Evaluation
         /// <summary>
         /// Appends a default header with a given separator
         /// </summary>
-        protected void AppendDefaultHeaderWithSeparator(StringBuilder stringBuilder, string separator)
-        {
-            stringBuilder.AppendLine(
-                string.Join(separator, ["Id", "ParentId", "Pass", "File", "Line #", "Expression", "Inc (ms)", "Inc (%)", "Exc (ms)",
-                        "Exc (%)", "#", "Kind", "Bug"]));
-        }
+        protected void AppendDefaultHeaderWithSeparator(StringBuilder stringBuilder, string separator) => stringBuilder.AppendLine(
+                string.Join(separator, new string[] { "Id", "ParentId", "Pass", "File", "Line #", "Expression", "Inc (ms)", "Inc (%)", "Exc (ms)", "Exc (%)", "#", "Kind", "Bug" }));
 
         /// <summary>
         /// Appends a default representation of an evaluation location with a given separator
