@@ -173,10 +173,8 @@ namespace Microsoft.Build.Shared
         /// <summary>
         /// Ctor for deserializing from state file (custom binary serialization) using translator.
         /// </summary>
-        internal AssemblyNameExtension(ITranslator translator) : this()
-        {
-            Translate(translator);
-        }
+        internal AssemblyNameExtension(ITranslator translator)
+            : this() => Translate(translator);
 
         /// <summary>
         /// To be used as a delegate. Gets the AssemblyName of the given file.
