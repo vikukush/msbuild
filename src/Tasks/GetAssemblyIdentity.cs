@@ -4,11 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Reflection;
 using System.Text;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Shared;
 using Microsoft.Build.Utilities;
+using Mono.Cecil;
 
 #nullable disable
 
@@ -19,7 +19,7 @@ namespace Microsoft.Build.Tasks
     /// </summary>
     /// <comment>
     ///  Input:  Assembly Include="foo.exe"
-    ///  Output: Identity Include="Foo, Version=1.0.0.0", Name="Foo, Version="1.0.0.0"
+    ///  Output: Identity Include="Foo, Version=1.0.0.0", Name="Foo, Version="1.0.0.0".
     /// </comment>
     public class GetAssemblyIdentity : TaskExtension
     {
@@ -45,11 +45,13 @@ namespace Microsoft.Build.Tasks
             {
                 return null;
             }
+
             var s = new StringBuilder(a.Length * 2);
             foreach (Byte b in a)
             {
                 s.Append(b.ToString("X02", CultureInfo.InvariantCulture));
             }
+
             return s.ToString();
         }
 
@@ -58,10 +60,30 @@ namespace Microsoft.Build.Tasks
             var list = new List<ITaskItem>();
             foreach (ITaskItem item in AssemblyFiles)
             {
-                AssemblyName an;
                 try
                 {
-                    an = AssemblyName.GetAssemblyName(item.ItemSpec);
+                    using (var assembly = AssemblyDefinition.ReadAssembly(item.ItemSpec, new ReaderParameters { ReadingMode = ReadingMode.Deferred }))
+                    {
+                        ITaskItem newItem = new TaskItem(assembly.FullName);
+                        newItem.SetMetadata("Name", assembly.Name.Name);
+                        if (assembly.Name.Version != null)
+                        {
+                            newItem.SetMetadata("Version", assembly.Name.Version.ToString());
+                        }
+
+                        if (assembly.Name.PublicKeyToken != null)
+                        {
+                            newItem.SetMetadata("PublicKeyToken", ByteArrayToHex(assembly.Name.PublicKeyToken));
+                        }
+
+                        if (assembly.Name.Culture != null)
+                        {
+                            newItem.SetMetadata("Culture", assembly.Name.Culture);
+                        }
+
+                        item.CopyMetadataTo(newItem);
+                        list.Add(newItem);
+                    }
                 }
                 catch (BadImageFormatException e)
                 {
@@ -73,27 +95,10 @@ namespace Microsoft.Build.Tasks
                     Log.LogErrorWithCodeFromResources("GetAssemblyIdentity.CouldNotGetAssemblyName", item.ItemSpec, e.Message);
                     continue;
                 }
-
-                ITaskItem newItem = new TaskItem(an.FullName);
-                newItem.SetMetadata("Name", an.Name);
-                if (an.Version != null)
-                {
-                    newItem.SetMetadata("Version", an.Version.ToString());
-                }
-
-                if (an.GetPublicKeyToken() != null)
-                {
-                    newItem.SetMetadata("PublicKeyToken", ByteArrayToHex(an.GetPublicKeyToken()));
-                }
-
-                if (an.CultureInfo != null)
-                {
-                    newItem.SetMetadata("Culture", an.CultureInfo.ToString());
-                }
-                item.CopyMetadataTo(newItem);
-                list.Add(newItem);
             }
+
             Assemblies = list.ToArray();
+
             return !Log.HasLoggedErrors;
         }
     }

@@ -61,7 +61,9 @@
     <PackageVersion Include="Verify.Xunit" Version="19.14.1" />
     <PackageVersion Update="Verify.XUnit" Condition="'$(VerifyXUnitVersion)' != ''" Version="$(VerifyXUnitVersion)" />
 	
-	<PackageVersion Include="Microsoft.VisualStudio.SolutionPersistence" Version="$(MicrosoftVisualStudioSolutionPersistenceVersion)" />
+	  <PackageVersion Include="Microsoft.VisualStudio.SolutionPersistence" Version="$(MicrosoftVisualStudioSolutionPersistenceVersion)" />
+
+    <PackageVersion Include="Mono.Cecil" Version="$(MonoCecilVersion)" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(DotNetBuildSourceOnly)' != 'true' AND $(ProjectIsDeprecated) != 'true'">
