@@ -250,5 +250,6 @@
     <!-- Disabled PdbGit because of warnings; it could/should be brought back.
     <PackageReference Include="PdbGit" /> -->
     <PackageReference Include="LargeAddressAware" PrivateAssets="All" />
+    <PackageReference Include="Mono.Cecil" />
   </ItemGroup>
 </Project>

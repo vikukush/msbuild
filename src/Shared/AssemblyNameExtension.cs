@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using Microsoft.Build.BackEnd;
+using Mono.Cecil;
 
 #nullable disable
 
@@ -173,7 +174,8 @@ namespace Microsoft.Build.Shared
         /// <summary>
         /// Ctor for deserializing from state file (custom binary serialization) using translator.
         /// </summary>
-        internal AssemblyNameExtension(ITranslator translator) : this()
+        internal AssemblyNameExtension(ITranslator translator)
+            : this()
         {
             Translate(translator);
         }
@@ -187,7 +189,10 @@ namespace Microsoft.Build.Shared
         {
             try
             {
-                return new AssemblyNameExtension(AssemblyName.GetAssemblyName(path));
+                using (var assembly = AssemblyDefinition.ReadAssembly(path, new ReaderParameters { ReadingMode = ReadingMode.Deferred }))
+                {
+                    return new AssemblyNameExtension(assembly.Name.Name);
+                }
             }
             catch (FileLoadException)
             {
@@ -204,7 +209,7 @@ namespace Microsoft.Build.Shared
         }
 
         /// <summary>
-        /// Run after the object has been deserialized
+        /// Run after the object has been deserialized.
         /// </summary>
         [OnDeserialized]
         private void SetRemappedFromDefaultAfterSerialization(StreamingContext sc)
